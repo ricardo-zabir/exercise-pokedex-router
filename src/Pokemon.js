@@ -1,4 +1,6 @@
 import React from 'react';
+import { Route } from 'react-router';
+import pokemons from './data';
 import './pokemon.css';
 
 class Pokemon extends React.Component {

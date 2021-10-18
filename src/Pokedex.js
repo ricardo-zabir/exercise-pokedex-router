@@ -2,6 +2,11 @@ import React from 'react';
 import Pokemon from './Pokemon';
 import Button from './Button';
 import './pokedex.css';
+import { Route, Link, Switch } from 'react-router-dom';
+import pokemons from './data';
+import PokemonDetails from './PokemonDetails';
+import About from './About';
+import NotFound from './NotFound';
 
 class Pokedex extends React.Component {
   constructor(props) {
@@ -41,7 +46,18 @@ class Pokedex extends React.Component {
     const pokemon = filteredPokemons[this.state.pokemonIndex];
 
     return (
-      <div className="pokedex">
+    <div>
+      <Switch>
+      <Route path='/Pokemons/:pokeName' render={(props) => {
+        return <div><PokemonDetails pokemon={pokemons.find((pokemon) => pokemon.name === props.match.params.pokeName)} />
+        <Link to='/Pokemons'>
+          Voltar a pokedex
+        </Link>
+        </div>
+      }} />
+      <Route path='/about' render={() => <About />} />
+      <Route exact path={['/Pokemons','/']} render={ () => {
+      return <div className="pokedex">
         <Pokemon pokemon={pokemon} />
         <div className="pokedex-buttons-panel">
           <Button
@@ -64,7 +80,13 @@ class Pokedex extends React.Component {
           disabled={filteredPokemons.length <= 1}>
           Próximo pokémon
         </Button>
-      </div>
+        <Link to={`/Pokemons/${pokemon.name}`}>
+          Obter mais detalhes
+        </Link>
+      </div>}} />
+      <Route path='*' render={() => <NotFound />} />
+      </Switch>
+    </div>
     );
   }
 }
